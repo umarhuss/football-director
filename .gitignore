@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+.pytest_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# uv
+.python-version
+
+# Rust
+rust-engine/target/
+
+# Data — never push raw data
+data/raw/
+data/processed/
+
+# Mac system files
+.DS_Store
+
+# VSCode
+.vscode/
