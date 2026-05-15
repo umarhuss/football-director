@@ -1,4 +1,4 @@
-## Session 1 — [DATE]
+## Session 1 — 14/05/2026
 
 ### What I did:
 Set up the initial project structure with a hybrid
