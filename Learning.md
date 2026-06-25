@@ -34,7 +34,7 @@ Made decisions about the direction of the project based on the data.
 
 ### Key decisions made and why:
 - Focus on creating player vectors as data is not as extensive as i had hoped but i can still get good insights.
-- I will have to scrape further dat in V2 of the project to get certain information.
+- I will have to scrape further data in V2 of the project to get certain information.
 - Decided to use La liga and UCL data as this has a good length of continuous data and the worlds best players were in these leagues at the time.
 
 ### Concepts I learned:
