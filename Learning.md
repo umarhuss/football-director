@@ -50,3 +50,59 @@ season to start with.
 ### What I'm still unsure about:
 - Which season to start with for building
   the first player vectors
+
+## Session 3 — 21/05/2026
+
+### What I did:
+Explored the UCL 2019 final event data in detail.
+Identified all event types available in the data.
+Built pass metrics extractor to get per player pass statistics.
+
+### Key decisions made and why:
+- Used a hash map (dictionary) for player metrics — O(1) lookup vs O(n) nested loop
+- Used a set for incomplete pass outcomes — O(1) lookup vs O(n) list search
+- Separated successful pass check into a helper function — single responsibility
+- Decided to process all event types atomically rather than one at a time
+
+### Concepts I learned:
+- Hash map pattern for efficient player lookups
+- Running average calculation without storing all values
+- O(1) vs O(n) tradeoffs — time vs space complexity
+- Idempotency — processing a match twice shouldn't corrupt data
+- Atomic operations — all metrics save or nothing saves
+
+### How I'd explain this to someone:
+I loaded the UCL 2019 final events which contained 3165 individual actions. I filtered these by event type and built a per player pass metrics dictionary. For each player I tracked total passes, successful passes, average pass length and average pass angle. I used a running average calculation so I didn't need to store every individual pass value. The result was 890 total passes across 28 players which matched my earlier sanity check.
+
+### What I'm still unsure about:
+- How to handle edge cases in other event types
+- Whether the running average calculation handles all scenarios correctly
+
+---
+
+## Session 4 — 5/06/2026
+
+### What I did:
+Refactored the pass metrics extractor into a proper Python package.
+Created the module structure under src/football_director/extractors/.
+Tested the module imports correctly and returns the same results.
+
+### Key decisions made and why:
+- Moved code from notebook into src/ — notebooks are for exploration only, src/ is for production code
+- Created helper.py for successful_pass_check — single responsibility, reusable across extractors
+- Used relative imports with . — correct way for modules to import from the same package
+- Created __init__.py in each folder — required for Python to recognise them as packages
+
+### Concepts I learned:
+- Python package structure — src/package/module layout
+- Relative imports — from .helper import function
+- __init__.py — makes a folder a Python package
+- sys.path — telling Python where to find your modules in notebooks
+- Single responsibility principle — each function does one thing only
+
+### How I'd explain this to someone:
+I took the working pass extractor code from the notebook and turned it into a proper importable Python module. This involved creating the correct folder structure with __init__.py files, fixing imports to use relative paths, and testing that the function returns identical results when imported. This is the transition from exploration code to production code.
+
+### What I'm still unsure about:
+- How sys.path will be handled when we move to the full pipeline
+- Whether the module structure is correct for when uv manages dependencies
