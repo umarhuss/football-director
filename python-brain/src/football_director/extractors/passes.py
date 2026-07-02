@@ -1,8 +1,11 @@
-from .helper import successful_pass_check
+from .helper import successful_pass_check,update_avg
 
 def extract_pass_metrics(events:list) -> dict:
     # Temp ledger for the pass metrics
     player_pass_metrics = {}
+
+    # In final version code to check the processed file table
+    # in DB to for idempotency.
 
     # Loop through the json event data
     for event in events:
@@ -25,27 +28,26 @@ def extract_pass_metrics(events:list) -> dict:
 
             else:
                 # If player is already in the dict then update metrics
-                # Go to that entry
                 current_player = player_pass_metrics[p_id]
-                # record the previous count fo calculations later
-                previous_pass_total = current_player['total_passes']
-                current_player['total_passes'] += 1
+                pass_total = current_player['total_passes']
+
+                # Current pass length metrics
+                pass_len_avg = current_player['avg_pass_length']
+                new_pass_len = event['pass']['length']
+
+                # Current pass angle metrics
+                curr_angle_avg = current_player['avg_pass_angle']
+                new_pass_angle = event['pass']['angle']
+
+
+                # Calculate the average pass length
+                current_player['avg_pass_length'] = update_avg(pass_len_avg,pass_total,new_pass_len)
+                # Calculate the average pass angle
+                current_player['avg_pass_angle'] = update_avg(curr_angle_avg,pass_total,new_pass_angle)
                 # Go into the event find the successful and unsuccessful ones
                 current_player['successful_passes'] += successful_pass_check(event)
-
-                # Calculate the average pass len
-                # Multiply the avg by the old count to get sum
-                prev_avg_sum = current_player['avg_pass_length'] * previous_pass_total
-                # Add new length to the prev sum
-                curr_avg_sum = prev_avg_sum + event['pass']['length']
-                # Update the average
-                current_player['avg_pass_length']= curr_avg_sum / current_player['total_passes']
-
-                # Calc the average pass angle same formula as above
-                prev_angle_sum = current_player['avg_pass_angle'] * previous_pass_total
-                curr_angle_sum = prev_angle_sum + event['pass']['angle']
-                current_player['avg_pass_angle'] = curr_angle_sum / current_player['total_passes']
-
+                # Update the total pass count
+                current_player['total_passes'] += 1
 
     return player_pass_metrics
 
