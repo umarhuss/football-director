@@ -106,3 +106,46 @@ I took the working pass extractor code from the notebook and turned it into a pr
 ### What I'm still unsure about:
 - How sys.path will be handled when we move to the full pipeline
 - Whether the module structure is correct for when uv manages dependencies
+
+
+## Session 6 — 03/07/2026
+
+### What I did:
+Built three player metric extractors — passes, carries and shots.
+Refactored pass extractor to use shared helper functions.
+Created helper.py with reusable functions across all extractors.
+Tested each extractor with sanity checks against known match results.
+
+### Key decisions made and why:
+- Separation of concerns — each extractor handles one event type only
+- Helper functions for shared logic — DRY principle, calculate_distance reused across carries and shots
+- Defensive .get() on all data access — data pipelines must handle missing fields gracefully
+- Functions over classes — extractors are pure transformations, no state needed
+- Failed files table alongside processed files table — if a file fails processing log it separately
+- PostgreSQL with pgvector confirmed — not Qdrant, one database for both relational and vector data
+- Python extractors are reference implementation — Rust will reimplement same logic for production
+
+### Concepts I learned:
+- Defensive .get() — use when a field might be missing to avoid crashes
+- Reference semantics in Python — modifying a dictionary through a variable changes the original, no need to reassign
+- Running average formula — calculate without storing all values
+- Sanity checks — verify output against known facts (Liverpool won 2-0, total goals must be 2)
+- Pythagoras theorem applied to pitch coordinates — calculate_distance helper
+- Progressive carries — end_x minus start_x >= 10 means the ball moved significantly forward
+- StatsBomb pitch dimensions — 120 x 80, normalised across all grounds regardless of actual size
+- When to use class vs function — class when state persists across calls, function when transforming input to output
+
+### How I'd explain this to someone:
+I built individual extractor functions for passes, carries and shots. Each takes a list of match events and returns a dictionary of per player metrics. I used a hash map pattern for O(1) player lookups and a running average formula so I never need to store all individual values. I extracted the shared maths into helper functions so the same distance calculation works for both carries and shots. I verified each extractor by checking the output against known facts — the UCL 2019 final finished 2-0 to Liverpool so my shot extractor must return exactly 2 goals.
+
+### Architecture decisions locked in:
+- PostgreSQL with pgvector — one database for relational data and vector similarity search
+- Atomic processing — all extractors run on a match or none commit to the database
+- Idempotency — processed_matches table prevents double processing
+- Failed files table — log failures separately for debugging
+- Python extractors are reference implementation for future Rust rewrite
+
+### What I'm still unsure about:
+- When to use helper functions vs a class — understood conceptually but need more practice
+- How sys.path will be handled when the full pipeline is built
+- Best way to structure the remaining extractors efficiently
