@@ -1,4 +1,4 @@
-from .helper import avg_carry_distance,update_avg,progressive_carries
+from .helper import calculate_distance,update_avg,progressive_carries
 
 def extract_carry_metrics(events:list) -> dict:
     # Temporary ledger for the player carry metrics
@@ -9,9 +9,11 @@ def extract_carry_metrics(events:list) -> dict:
         if  event['type']['name'] == 'Carry':
             p_id = event['player']['id']
 
-            # Location metrics
+            # Global  metrics
             start_location = event['location']
             end_location = event['carry']['end_location']
+            carry_distance = calculate_distance(start_location, end_location)
+
 
             # If player id not in the metrics dict create a entry and insert
             if p_id not in player_carries_metrics:
@@ -20,7 +22,7 @@ def extract_carry_metrics(events:list) -> dict:
                     'player_id': p_id,
                     'player name': event['player']['name'],
                     'total_carries': 1,
-                    'avg_carry_distance':avg_carry_distance(start_location, end_location),
+                    'avg_carry_distance':carry_distance,
                     'progressive_carries': progressive_carries(start_location,end_location),
                     'avg_carry_duration': event['duration']
 
@@ -35,7 +37,6 @@ def extract_carry_metrics(events:list) -> dict:
                 curr_carry_avg = current_player['avg_carry_distance']
                 curr_duration_avg = current_player['avg_carry_duration']
                 curr_count = current_player['total_carries']
-                carry_distance = avg_carry_distance(start_location, end_location)
                 carry_duration = event['duration']
 
 
