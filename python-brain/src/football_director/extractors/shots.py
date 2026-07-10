@@ -1,5 +1,5 @@
 from .helper import (calculate_distance,update_avg,update_goals,update_shots_on_target,
-                     update_open_play_shots,update_shots_under_pressure)
+                     update_open_play_shots,update_under_pressure)
 
 def extract_shot_metrics(events:list)-> dict:
     # Temp ledger for the player metrics
@@ -31,7 +31,7 @@ def extract_shot_metrics(events:list)-> dict:
                     'total_xg': shot_xg,
                     'open_play_shots': update_open_play_shots(event),
                     'avg_shot_distance': shot_distance,
-                    'shots_under_pressure':update_shots_under_pressure(event)
+                    'shots_under_pressure':update_under_pressure(event)
                 }
                 player_shot_metrics[p_id] = shot_interface
             else:
@@ -49,7 +49,7 @@ def extract_shot_metrics(events:list)-> dict:
                 current_player['total_xg'] += shot_xg
                 current_player['open_play_shots'] += update_open_play_shots(event)
                 current_player['avg_shot_distance'] = update_avg(curr_avg_distance,curr_shots_count,shot_distance)
-                current_player['shots_under_pressure'] += update_shots_under_pressure(event)
+                current_player['shots_under_pressure'] += update_under_pressure(event)
 
 
                 current_player['total_shots'] += 1

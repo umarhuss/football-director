@@ -1,4 +1,4 @@
-from .helper import calculate_distance,update_avg,progressive_carries
+from .helper import calculate_distance,update_avg,progressive_carries,update_under_pressure
 
 def extract_carry_metrics(events:list) -> dict:
     # Temporary ledger for the player carry metrics
@@ -15,6 +15,7 @@ def extract_carry_metrics(events:list) -> dict:
             carry_distance = calculate_distance(start_location, end_location)
 
 
+
             # If player id not in the metrics dict create a entry and insert
             if p_id not in player_carries_metrics:
 
@@ -24,7 +25,9 @@ def extract_carry_metrics(events:list) -> dict:
                     'total_carries': 1,
                     'avg_carry_distance':carry_distance,
                     'progressive_carries': progressive_carries(start_location,end_location),
-                    'avg_carry_duration': event['duration']
+                    'avg_carry_duration': event['duration'],
+                    'carries_under_pressure': update_under_pressure(event),
+                    'carries_under_pressure_pct': 0
 
                 }
                 # Save to the player metrics

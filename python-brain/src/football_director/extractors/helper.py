@@ -51,8 +51,12 @@ def update_open_play_shots(event: dict) -> int:
     shot_type = event['shot'].get('type', {}).get('name', '')
     return 1 if shot_type == 'Open Play' else 0
 
-def update_shots_under_pressure(event:dict) -> int:
+def update_under_pressure(event:dict) -> int:
     return 1 if event.get('under_pressure') else 0
 
-
+def update_under_pressure_pct(curr_total: int, curr_pressure_count:int):
+    if curr_total > 0:
+        return (curr_pressure_count/curr_total) * 100
+    else:
+        return 0
 
