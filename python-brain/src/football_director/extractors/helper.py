@@ -54,9 +54,19 @@ def update_open_play_shots(event: dict) -> int:
 def update_under_pressure(event:dict) -> int:
     return 1 if event.get('under_pressure') else 0
 
-def update_under_pressure_pct(curr_total: int, curr_pressure_count:int):
+def update_pct(curr_total: int, curr_pressure_count:int):
     if curr_total > 0:
         return (curr_pressure_count/curr_total) * 100
     else:
         return 0
 
+#  Interceptions
+
+def successful_interceptions(event:dict) -> int:
+    success_set = {'Success In Play', 'Won'}
+
+    outcome = event['interception'].get('outcome',{}).get('name',{})
+    if outcome in success_set:
+        return 1
+    else:
+        return 0

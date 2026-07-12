@@ -1,5 +1,5 @@
 from .helper import (successful_pass_check,update_avg,update_under_pressure,
-                     update_under_pressure_pct)
+                     update_pct)
 
 def extract_pass_metrics(events:list) -> dict:
     # Temp ledger for the pass metrics
@@ -17,7 +17,7 @@ def extract_pass_metrics(events:list) -> dict:
         # Check if there is anything in player pass metrics
             if p_id not in player_pass_metrics:
                 passes_under_pressure = update_under_pressure(event)
-                completion_under_pressure_pct = update_under_pressure_pct(1, passes_under_pressure)
+                completion_under_pressure_pct = update_pct(1, passes_under_pressure)
 
                 player_passes = {
                     'player_id': p_id,
@@ -57,7 +57,7 @@ def extract_pass_metrics(events:list) -> dict:
                 current_player['passes_under_pressure'] += update_under_pressure(event)
                 current_player['successful_passes_under_pressure'] += successful_pass_check(event) if update_under_pressure(event) else 0
                 # Update the pass completion pct
-                current_player['pass_completion_under_pressure_pct'] = update_under_pressure_pct(
+                current_player['pass_completion_under_pressure_pct'] = update_pct(
                 current_player['passes_under_pressure'],
                 current_player['successful_passes_under_pressure']
                 )
