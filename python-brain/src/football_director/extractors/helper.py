@@ -70,3 +70,17 @@ def successful_interceptions(event:dict) -> int:
         return 1
     else:
         return 0
+
+
+# Clearances
+
+def clearance_type_count(event:dict) -> int:
+    body_options = {'Right Foot', 'Other', 'Left Foot', 'Head'}
+
+    body_part = event['clearance']['body_part']['name']
+
+    if body_part in body_options:
+        return 1
+    else:
+        return 0
+
