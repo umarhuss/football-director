@@ -54,9 +54,9 @@ def update_open_play_shots(event: dict) -> int:
 def update_under_pressure(event:dict) -> int:
     return 1 if event.get('under_pressure') else 0
 
-def update_pct(curr_total: int, curr_pressure_count:int):
+def update_pct(curr_total: int, curr_count:int):
     if curr_total > 0:
-        return (curr_pressure_count/curr_total) * 100
+        return (curr_count/curr_total) * 100
     else:
         return 0
 
@@ -71,3 +71,8 @@ def successful_interceptions(event:dict) -> int:
     else:
         return 0
 
+# Duels
+
+def check_outcome(event: dict, event_type: str, success_set: set) -> int:
+    outcome = event[event_type].get('outcome', {}).get('name', '')
+    return 1 if outcome in success_set else 0
