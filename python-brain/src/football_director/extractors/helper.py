@@ -110,3 +110,7 @@ def pen_rate(curr_total:int, pen_total:int) -> float:
 def offensive_foul_check(event: dict) -> int:
     return 1 if event.get('foul_committed', {}).get('offensive') else 0
 
+# Miscontrol
+
+def miscontrol_out(event:dict)-> int:
+    return 1 if event.get('out',{}) else 0
