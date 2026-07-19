@@ -78,11 +78,35 @@ def check_outcome(event: dict, event_type: str, success_set: set) -> int:
     return 1 if outcome in success_set else 0
 
 # Fouls won
-def penalty_won_check(event:dict)-> int:
-    return 1 if event.get('foul_won',{}).get('penalty') == True else 0
+def penalty_won_check(event:dict, foul_type:str)-> int:
+    if foul_type == 'Foul Won':
+        return 1 if event.get('foul_won',{}).get('penalty') == True else 0
+    else:
+        return 1 if event.get('foul_committed',{}).get('penalty') == True else 0
 
 def defensive_foul_check(event:dict) -> int:
     return 1 if event.get('foul_won',{}).get('defensive') else 0
 
 
+
+
+# Fouls committed
+def card_check(event: dict, card_type: str) -> int:
+    card = event.get('foul_committed', {}).get('card', {}).get('name', '')
+    return 1 if card == card_type else 0
+
+def card_rate(curr_total: int, y_total: int, r_total: int, s_yellow_total: int) -> float:
+    card_total = y_total + r_total + s_yellow_total
+    if curr_total > 0:
+        return (card_total / curr_total) * 100
+    return 0.0
+
+def pen_rate(curr_total:int, pen_total:int) -> float:
+    if curr_total > 0:
+        return (pen_total / curr_total) * 100
+
+    return 0.0
+
+def offensive_foul_check(event: dict) -> int:
+    return 1 if event.get('foul_committed', {}).get('offensive') else 0
 

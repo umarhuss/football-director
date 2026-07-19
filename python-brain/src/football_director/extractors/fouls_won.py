@@ -11,7 +11,7 @@ def extract_fouls_won_metrics(events:list)-> dict:
 
             if p_id not in player_fouls_won_metrics:
                 total = 1
-                pen_won = penalty_won_check(event)
+                pen_won = penalty_won_check(event,'Foul Won')
                 fouls_won_interface = {
                     'id': p_id,
                     'name': event['player']['name'],
@@ -29,7 +29,7 @@ def extract_fouls_won_metrics(events:list)-> dict:
                 curr_player = player_fouls_won_metrics[p_id]
 
 
-                curr_player['penalties_won'] += penalty_won_check(event)
+                curr_player['penalties_won'] += penalty_won_check(event,'Foul Won')
                 curr_player['defensive_fouls_won'] += defensive_foul_check(event)
 
                 curr_player['avg_foul_won_loc_x'] = update_avg(curr_player['avg_foul_won_loc_x'], curr_player['total_fouls_won'], loc_x)
