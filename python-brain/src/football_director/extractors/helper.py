@@ -76,3 +76,13 @@ def successful_interceptions(event:dict) -> int:
 def check_outcome(event: dict, event_type: str, success_set: set) -> int:
     outcome = event[event_type].get('outcome', {}).get('name', '')
     return 1 if outcome in success_set else 0
+
+# Fouls won
+def penalty_won_check(event:dict)-> int:
+    return 1 if event.get('foul_won',{}).get('penalty') == True else 0
+
+def defensive_foul_check(event:dict) -> int:
+    return 1 if event.get('foul_won',{}).get('defensive') else 0
+
+
+
