@@ -149,3 +149,47 @@ I built individual extractor functions for passes, carries and shots. Each takes
 - When to use helper functions vs a class — understood conceptually but need more practice
 - How sys.path will be handled when the full pipeline is built
 - Best way to structure the remaining extractors efficiently
+
+
+## Session 7 — 23/07/2026
+
+### What I did:
+Completed all 13 player metric extractors for the football director project.
+Used the UCL 2019 final as the initial exploration base and cross referenced
+with La Liga 2020/2021 across 35 matches to ensure robustness of field names
+and metric definitions.
+Created a comprehensive helper.py with reusable functions across all extractors.
+Tested each extractor in notebook 2 with sanity checks against known results.
+Merged feat/player-metrics-extractors branch into main.
+
+### Key decisions made and why:
+- Cross referenced multiple competitions before building — one match is not
+  enough to confirm all possible field values
+- Helper functions for shared logic — DRY principle, reusable across all 13 extractors
+- Defensive .get() throughout — external data is never guaranteed to have every field
+- Separate extractors per event type — single responsibility principle
+- Temporary dictionary ledger for V1 — database comes in V2
+- JSON files for processed/failed match ledger in V1 — simple, effective,
+  no database overhead yet
+
+### Concepts I learned:
+- Importance of exploring data across multiple matches not just one
+- Order of operations — update counts before calculating percentages
+- Reference semantics — modifying dictionary through variable changes original
+- Atomic thinking — all extractors succeed or nothing saves
+- Idempotency — processed matches ledger prevents double processing
+- Failed files logging — separate ledger for failed extractions
+
+### How I'd explain this to someone:
+I built 13 individual extractor functions each responsible for one event type.
+For each I first explored the data shape in a notebook to understand all possible
+fields, then built the extractor using a hash map pattern for O(1) player lookups
+and running averages to avoid storing all raw values. I cross referenced field names
+across multiple competitions to ensure robustness. Each extractor returns a dictionary
+of per player metrics which will be combined in the pipeline into a full player profile.
+
+### What I'm still unsure about:
+- Exact timing of when to introduce PostgreSQL for the pipeline
+- How to handle players who appear across multiple seasons —
+  same player ID but potentially different teams
+- Best way to combine metrics from all 13 extractors into one player vector
