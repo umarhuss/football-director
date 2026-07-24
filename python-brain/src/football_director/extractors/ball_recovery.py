@@ -12,8 +12,8 @@ def extract_ball_recovery_metrics(events:list)-> dict:
 
             if p_id not in player_ball_recovery_metrics:
                 ball_recovery_interface = {
-                    'id': p_id,
-                    'name': event['player']['name'],
+                    'player_id': p_id,
+                    'player_name': event['player']['name'],
                     'total_recovery': 1,
                     'avg_recovery_loc_x': loc_x,
                     'avg_recovery_loc_y': loc_y

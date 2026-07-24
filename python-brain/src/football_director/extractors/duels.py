@@ -16,8 +16,8 @@ def extract_duel_metrics(events:list)-> dict:
                 wins = check_outcome(event,'duel',successful_outcomes)
                 duels_with_outcomes = 1 if event['duel'].get('outcome') else 0
                 duels_interface = {
-                    'id': p_id,
-                    'name': event['player']['name'],
+                    'player_id': p_id,
+                    'player_name': event['player']['name'],
                     'total_duels': total,
                     'duels_with_outcome': duels_with_outcomes,
                     'duels_won': wins,

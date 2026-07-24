@@ -21,11 +21,11 @@ def extract_carry_metrics(events:list) -> dict:
 
                 carry_interface = {
                     'player_id': p_id,
-                    'player name': event['player']['name'],
+                    'player_name': event['player']['name'],
                     'total_carries': 1,
                     'avg_carry_distance':carry_distance,
                     'progressive_carries': progressive_carries(start_location,end_location),
-                    'avg_carry_duration': event['duration'],
+                    'avg_carry_duration': event.get('duration', 0.0),
                     'carries_under_pressure': update_under_pressure(event),
                     'carries_under_pressure_pct': 0
 
@@ -40,7 +40,7 @@ def extract_carry_metrics(events:list) -> dict:
                 curr_carry_avg = current_player['avg_carry_distance']
                 curr_duration_avg = current_player['avg_carry_duration']
                 curr_count = current_player['total_carries']
-                carry_duration = event['duration']
+                carry_duration = event.get('duration', 0.0)
 
 
                 current_player['avg_carry_distance'] = update_avg(curr_carry_avg,curr_count,carry_distance)

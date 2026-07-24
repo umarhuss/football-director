@@ -8,7 +8,7 @@ def extract_clearance_metrics(events:list)-> dict:
         if event['type']['name'] == 'Clearance':
             p_id = event['player']['id']
             p_name = event['player']['name']
-            body_part = event['clearance']['body_part']['name']
+            body_part = event.get('clearance',{}).get('body_part',{}).get('name', {'Other'})
             loc_x = event['location'][0]
             loc_y = event['location'][1]
 
@@ -24,7 +24,7 @@ def extract_clearance_metrics(events:list)-> dict:
                     'clearances_under_pressure_pct': update_pct(total_count,pressure_count),
                     'avg_clearance_loc_x': loc_x,
                     'avg_clearance_loc_y': loc_y,
-                    'aerial_clearances': 1 if event['clearance'].get('aerial_won') else 0,
+                    'aerial_clearances': 1 if event.get('clearance', {}).get('aerial_won') else 0,
                     'headed_clearances': 1 if body_part == 'Head' else 0,
                     'left_foot_clearances': 1 if body_part == 'Left Foot' else 0,
                     'right_foot_clearances': 1 if body_part == 'Right Foot' else 0,
@@ -45,7 +45,7 @@ def extract_clearance_metrics(events:list)-> dict:
                 curr_player['avg_clearance_loc_y'] = update_avg(curr_avg_loc_y,curr_total_count,loc_y)
 
 
-                curr_player['aerial_clearances']+= 1 if event['clearance'].get('aerial_won') else 0
+                curr_player['aerial_clearances']+= 1 if event.get('clearance', {}).get('aerial_won') else 0
                 curr_player['headed_clearances']+= 1 if body_part == 'Head' else 0
                 curr_player['left_foot_clearances'] += 1 if body_part == 'Left Foot' else 0
                 curr_player['right_foot_clearances']+= 1 if body_part == 'Right Foot' else 0

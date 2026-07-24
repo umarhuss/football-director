@@ -14,8 +14,8 @@ def extract_miscontrol_metrics(events:list)-> dict:
                 total = 1
                 total_miscontrols_up = update_under_pressure(event)
                 miscontrol_interface = {
-                    'id': p_id,
-                    'name': event['player']['name'],
+                    'player_id': p_id,
+                    'player_name': event['player']['name'],
                     'total_miscontrols': total,
                     'miscontrols_under_pressure': total_miscontrols_up,
                     'miscontrols_under_pressure_pct': update_pct(total, total_miscontrols_up),

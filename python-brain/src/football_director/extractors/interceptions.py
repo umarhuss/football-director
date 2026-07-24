@@ -18,8 +18,8 @@ def extract_interception_metrics(events:list)-> dict:
 
             if p_id not in player_interception_metrics:
                 interception_interface = {
-                    'id': p_id,
-                    'name': p_name,
+                    'player_id': p_id,
+                    'player_name': p_name,
                     'total_interceptions': 1,
                     'successful_interceptions': successful,
                     'avg_interception_loc_x': loc_x,

@@ -6,7 +6,7 @@ def extract_pressure_metrics(events:list)-> dict:
     for event in events:
         if event['type']['name'] == 'Pressure':
             p_id = event['player']['id']
-            pressure_duration = event['duration']
+            pressure_duration = event.get('duration', 0.0)
             # The x and y tell different things x = high or low and
             # the y = what channels PCA could find this useful.
             pressure_loc_x = event['location'][0]

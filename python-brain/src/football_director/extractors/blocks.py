@@ -13,8 +13,8 @@ def extract_block_metrics(events:list)-> dict:
             if p_id not in player_block_metrics:
                 total_count = 1
                 block_interface = {
-                    'id': p_id,
-                    'name': event['player']['name'],
+                    'player_id': p_id,
+                    'player_name': event['player']['name'],
                     'total_blocks': total_count,
                     'avg_block_loc_x': loc_x,
                     'avg_block_loc_y': loc_y
@@ -32,5 +32,5 @@ def extract_block_metrics(events:list)-> dict:
                 curr_player['avg_block_loc_y'] = update_avg(curr_y_avg,curr_total,loc_y)
 
                 curr_player['total_blocks'] += 1
-                
+
     return player_block_metrics

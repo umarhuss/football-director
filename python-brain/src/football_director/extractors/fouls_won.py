@@ -13,8 +13,8 @@ def extract_fouls_won_metrics(events:list)-> dict:
                 total = 1
                 pen_won = penalty_won_check(event,'Foul Won')
                 fouls_won_interface = {
-                    'id': p_id,
-                    'name': event['player']['name'],
+                    'player_id': p_id,
+                    'player_name': event['player']['name'],
                     'total_fouls_won': total,
                     'penalties_won':pen_won,
                     'penalty_won_rate':update_pct(total,pen_won),

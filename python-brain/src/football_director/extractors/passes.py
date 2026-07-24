@@ -21,7 +21,7 @@ def extract_pass_metrics(events:list) -> dict:
 
                 player_passes = {
                     'player_id': p_id,
-                    'name': event['player']['name'],
+                    'player_name': event['player']['name'],
                     'total_passes': 1,
                     'successful_passes': successful_pass_check(event),
                     'avg_pass_length': event['pass']['length'],

@@ -14,8 +14,8 @@ def extract_dispossessed_metrics(events:list)-> dict:
                 dispossessed_up = update_under_pressure(event)
 
                 dispossessed_interface = {
-                    'id': p_id,
-                    'name': event['player']['name'],
+                    'player_id': p_id,
+                    'player_name': event['player']['name'],
                     'total_dispossessed': total,
                     'dispossessed_under_pressure':dispossessed_up,
                     'dispossessed_under_pressure_pct':update_pct(total,dispossessed_up),

@@ -18,8 +18,8 @@ def extract_fouls_committed_metrics(events:list)-> dict:
                 sec_y_count = card_check(event, 'Second Yellow')
 
                 fouls_committed_interface = {
-                        'id': p_id,
-                        'name': event['player']['name'],
+                        'player_id': p_id,
+                        'player_name': event['player']['name'],
                         'total_fouls_committed': total,
                         'penalties_conceded': pen_total,
                         'yellow_cards': y_card_count,
