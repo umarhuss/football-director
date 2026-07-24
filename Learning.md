@@ -193,3 +193,34 @@ of per player metrics which will be combined in the pipeline into a full player 
 - How to handle players who appear across multiple seasons —
   same player ID but potentially different teams
 - Best way to combine metrics from all 13 extractors into one player vector
+
+## Session 8 — 24/07/2026
+
+### What I did:
+Built the player profile pipeline function that orchestrates all 13 extractors.
+Fixed defensive .get() issues across multiple extractors discovered during pipeline testing.
+Standardised player_id and player_name keys across all extractors.
+Successfully processed 9037 player profiles across all competitions and seasons in the dataset.
+
+### Key decisions made and why:
+- Pipeline takes Path objects as parameters — clean, reusable, not hardcoded
+- Try/except block around all extractors — if any fail the match is skipped entirely
+- Nested loop structure for now — competitions → seasons → matches → events
+- Will flatten into separate functions in V2 for cleaner code
+- Deferred idempotency ledger to V2 — JSON ledger for processed/failed files not yet implemented
+- Parquet storage next — V1 persistence layer before PostgreSQL in V2
+
+### Concepts I learned:
+- Running a pipeline across an entire dataset surfaces bugs that single match testing misses
+- Defensive .get() is essential for any data pipeline — never assume fields exist
+- Consistent naming conventions across modules matter — player name vs player_name breaks downstream code
+- Stale kernel causes — always restart after changing module code
+- Relative imports with .. to navigate up package levels
+
+### How I'd explain this to someone:
+I built a pipeline function that walks through every competition, season and match in the StatsBomb dataset. For each match it loads the events file and passes it through all 13 extractors. If any extractor fails the match is skipped and logged. The results from all extractors are merged into a single dictionary per player using their player ID as the key. Running this across the full dataset revealed two bugs — missing defensive .get() calls in carries and clearances, and inconsistent key naming across extractors. After fixing both the pipeline ran cleanly producing 9037 complete player profiles.
+
+### What I'm still unsure about:
+- Best way to implement the processed/failed match ledger in V1
+- How to handle players who appear across multiple seasons — currently metrics accumulate which may skew averages
+- Whether 9037 is the right number or if some players are being missed
