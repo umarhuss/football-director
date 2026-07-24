@@ -224,3 +224,9 @@ I built a pipeline function that walks through every competition, season and mat
 - Best way to implement the processed/failed match ledger in V1
 - How to handle players who appear across multiple seasons — currently metrics accumulate which may skew averages
 - Whether 9037 is the right number or if some players are being missed
+
+### Additional — Parquet storage:
+Converted 9037 player profiles to a Polars DataFrame and saved to
+data/processed/player_profiles.parquet. Used fill_null(0) to handle
+missing metrics for players who didn't appear in certain event types.
+Result: 9037 rows, 87 columns, ready for PCA.
