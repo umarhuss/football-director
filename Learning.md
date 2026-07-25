@@ -230,3 +230,45 @@ Converted 9037 player profiles to a Polars DataFrame and saved to
 data/processed/player_profiles.parquet. Used fill_null(0) to handle
 missing metrics for players who didn't appear in certain event types.
 Result: 9037 rows, 87 columns, ready for PCA.
+
+
+## Session 9 — 25/07/2026
+
+### What I did:
+Implemented PCA and cosine similarity engine on 9037 player profiles.
+Standardised 83 numeric metrics using StandardScaler before running PCA.
+Reduced 83 dimensions to 53 components explaining 95% of variance.
+Built player similarity search function using cosine similarity.
+Saved player vectors to data/processed/player_vectors.parquet.
+
+### Key decisions made and why:
+- StandardScaler before PCA — without it PCA would be dominated by metrics
+  with larger numerical ranges regardless of actual importance
+- 95% variance threshold — industry standard, captures signal while removing noise
+- 53 components — higher than expected, reflects genuine complexity of player data
+  across 83 diverse metrics
+- Cosine similarity over euclidean distance — measures style angle not volume,
+  so number of games played doesn't inflate similarity scores
+
+### Concepts I learned:
+- PCA doesn't remove original metrics — it creates new components that are
+  weighted combinations of all original metrics
+- Each component captures a direction of maximum variance in the data
+- Eigenvalues tell you how much variance each component explains
+- Cosine similarity measures angle between vectors not distance
+- numpy argmax on cumulative variance to find optimal number of components
+- reshape(1, -1) to convert a 1D vector to 2D for sklearn compatibility
+
+### How I'd explain this to someone:
+I standardised all 83 player metrics to the same scale so PCA could fairly
+compare them. PCA then found 53 underlying patterns in the data that together
+explain 95% of the variation between players. Each player now has a vector of
+53 numbers representing their playing style. To find similar players I use
+cosine similarity which measures the angle between two vectors — meaning Messi
+and Arjen Robben have similar angles because their overall action profiles are
+similar, not just one specific attribute.
+
+### What I'm still unsure about:
+- Whether to filter by position before running similarity search
+- How to handle women's players appearing in results for men's player searches
+- Whether 53 components is too many or if 90% threshold would be better
