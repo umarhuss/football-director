@@ -1,4 +1,5 @@
-from .helper import update_pct, check_outcome, update_avg
+from .helper import check_outcome, update_avg, update_pct
+
 
 def extract_duel_metrics(events:list)-> dict:
     player_duel_metrics = {}

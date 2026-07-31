@@ -272,3 +272,49 @@ similar, not just one specific attribute.
 - Whether to filter by position before running similarity search
 - How to handle women's players appearing in results for men's player searches
 - Whether 53 components is too many or if 90% threshold would be better
+
+
+## Session 10 — 30/07/2026
+
+### What I did:
+Built the V1 Streamlit dashboard with player search, profile display
+and similarity engine.
+Implemented selectbox search across 9037 players.
+Built player profile card with passing, carrying, shooting and
+defending metrics.
+Built similar players section showing top 10 most similar players
+using cosine similarity with cards in a 5x2 grid layout.
+
+### Key decisions made and why:
+- st.selectbox over st.text_input — built in filtering, simpler implementation
+- st.cache_data for data loading — prevents reloading on every page refresh
+- st.metric for stats display — clean card format built into Streamlit
+- st.columns for layout — organises metrics into readable sections
+- Calculated pass_completion_pct and shot_accuracy_pct on the fly
+  in the dashboard — no need to change extractors
+
+### Concepts I learned:
+- Streamlit runs top to bottom and reruns on every interaction
+- st.cache_data prevents expensive operations running on every rerun
+- columns and containers for layout
+- unsafe_allow_html for custom CSS — unreliable in Streamlit
+- cosine_similarity needs 2D input hence reshape(1, -1)
+
+### How I'd explain this to someone:
+I built a Streamlit dashboard that loads player profiles and vectors
+from Parquet files. When a player is selected the app filters their
+row from the profiles DataFrame and displays key metrics. It then
+finds their vector in the player vectors DataFrame, runs cosine
+similarity against all 9037 players and displays the top 10 most
+similar players in a card grid.
+
+### What I'm still unsure about:
+- How to handle players known by different names e.g. Pelé
+- Whether to normalise stats per 90 minutes — decided to leave for V2
+  as minutes played data not readily available
+- CSS styling limitations in Streamlit
+
+### Improvements identified for next session:
+- Add radar chart with Plotly for visual player profile comparison
+- Add position and club to player cards and similar player cards
+- Consider per 90 normalisation in V2 with better data sources
