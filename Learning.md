@@ -318,3 +318,38 @@ similar players in a card grid.
 - Add radar chart with Plotly for visual player profile comparison
 - Add position and club to player cards and similar player cards
 - Consider per 90 normalisation in V2 with better data sources
+
+## Session 11 — 07/07/2026
+
+### What I did:
+Deployed the Football Director app to AWS EC2.
+Set up an Elastic IP for a permanent URL.
+Configured systemd to keep the app running automatically.
+App is now live at http://13.42.78.189:8501
+
+### Key decisions made and why:
+- Ubuntu over Amazon Linux — skills transfer to any cloud provider
+- t3.micro — enough power for a Streamlit app, free tier eligible
+- Elastic IP — so the URL stays the same when instance stops/starts
+- systemd service — so I don't have to manually restart the app
+
+### Concepts I learned:
+- EC2 — renting a virtual computer from Amazon
+- AMI — the operating system you install on it
+- Instance types — hardware specs, chose based on what the app needs
+- Key pairs — SSH authentication, more secure than passwords
+- Security groups — firewall, nothing open by default, I opened ports 22, 80 and 8501
+- Elastic IP — permanent IP address
+- systemd — Linux service manager, keeps app running permanently
+
+### How I'd explain this to someone:
+I deployed my Streamlit app to an AWS EC2 instance running Ubuntu.
+I configured the security group to open the ports my app needs,
+connected via SSH using a key pair, cloned my repo onto the server,
+transferred the Parquet data files, and set up a systemd service
+so the app runs automatically and restarts if it ever crashes.
+
+### What I'm still unsure about:
+- Doing this from scratch without guidance — need to do it again
+- Terminal commands becoming natural with more practice
+- More advanced AWS for V2 — RDS, ECS, Docker
