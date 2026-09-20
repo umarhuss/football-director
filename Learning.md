@@ -353,3 +353,53 @@ so the app runs automatically and restarts if it ever crashes.
 - Doing this from scratch without guidance — need to do it again
 - Terminal commands becoming natural with more practice
 - More advanced AWS for V2 — RDS, ECS, Docker
+
+## Session 12 — 19/09/2026
+## Rust migration: file structure, serde, and the Event struct
+
+### What I did
+- Restructured the fd_engine file tree to follow Rust convention: split
+  `lib.rs` and `ingestion.rs`, moved the ingestion module into its own files.
+- Realised *why* the structure works: every file must be declared with `mod`
+  or the compiler never looks at it. `lib.rs` declares `ingestion`, `ingestion.rs`
+  declares its children (event, passes, etc.). Each `mod` is one link in the
+  chain — miss one and the file below is invisible.
+- Started the Python → Rust migration: began the ingestion side and the
+  Event struct.
+
+### Decisions
+- Kept myself as the one writing the actual Rust (structs, extractor logic,
+  ownership) — that's where the learning is. Used Claude Code only for
+  boilerplate/scaffolding, concept explanations, and eyeballing the data
+  structure. Redoing the data exploration manually in Python would've cost time
+  and taught me nothing new.
+- Set the CLAUDE.md rules so Claude Code hints and explains rather than writing
+  my Rust for me.
+
+### Concepts learned
+- **serde / serde_json**: how (de)serialisation works in Rust vs Python.
+  Python hides it (`json.load` into a dict, no declared shape). Rust makes it
+  explicit — I declare the struct shape upfront, and `#[derive(Deserialize)]`
+  generates the parsing. This is static vs dynamic typing showing up in practice.
+- **Data types → struct fields**: how to map json fields to Rust types, and
+  creating custom structs where needed. Text fields = `String` (owned).
+  `Option<T>` for fields that only some events have.
+- Difference between `String` (owned, growable) and `&str` (borrowed view).
+  Rule: store `String`, accept `&str`.
+- Tuple vs array: array = fixed length, same type; tuple = fixed length,
+  mixed types.
+
+### How I'd explain it to someone
+I built the first part of a Rust ingestion tool. The idea: take a path to a
+directory as a parameter, loop through each file, and deserialize each json
+file into a **list of Event structs** (`Vec<Event>`). That list is then passed
+**by reference** to each extractor, so all of them share the one parsed copy
+instead of re-parsing — and the extractor's internal logic takes over from there.
+
+### Still unsure / next
+- **Paths** — I've read them (`crate::ingestion::event::Event`, `use`) but only
+  in theory. This needs hands-on reps: write a `use`, get it wrong, read the
+  compiler error, fix it. The path error messages are some of Rust's most
+  helpful, so it's a good thing to learn by breaking.
+- Keep using Claude Code to explain areas I'm unsure on, while writing the
+  Rust myself.
