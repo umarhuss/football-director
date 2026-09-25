@@ -12,7 +12,7 @@ __pycache__/
 .python-version
 
 # Rust
-rust-engine/target/
+fd_engine/target/
 
 # Data — never push raw data
 data/raw/
